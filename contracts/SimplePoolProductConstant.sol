@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
+import {ERC1155Holder} from "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
+import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 
-contract SimplePoolProductConstant {
+contract SimplePoolProductConstant is ERC1155Holder {
     IERC20 public immutable token0;
     IERC20 public immutable token1;
 
-    uint256 public reserve0;
-    uint256 public reserve1;
+    // uint256 public reserve0;
+    // uint256 public reserve1;
 
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
@@ -26,9 +28,13 @@ contract SimplePoolProductConstant {
         totalSupply -= _amount;
     }
 
-    function _update(uint256 _reserve0, uint256 _reserve1) private {
-        reserve0 = _reserve0;
-        reserve1 = _reserve1;
+    // function _update(uint256 _reserve0, uint256 _reserve1) private {
+    //     reserve0 = _reserve0;
+    //     reserve1 = _reserve1;
+    // }
+
+    function _reserves() private view returns (uint256, uint256) {
+        return (token0.balanceOf(address(this)), token1.balanceOf(address(this)));
     }
 
     function swap(address _tokenIn, uint256 _amountIn)
@@ -40,6 +46,8 @@ contract SimplePoolProductConstant {
             "invalid token"
         );
         require(_amountIn > 0, "amount in = 0");
+
+        (uint256 reserve0, uint256 reserve1) = _reserves();
 
         bool isToken0 = _tokenIn == address(token0);
         (IERC20 tokenIn, IERC20 tokenOut, uint256 reserveIn, uint256 reserveOut)
@@ -67,9 +75,13 @@ contract SimplePoolProductConstant {
 
         tokenOut.transfer(msg.sender, amountOut);
 
-        _update(
-            token0.balanceOf(address(this)), token1.balanceOf(address(this))
-        );
+        // _update(
+        //     token0.balanceOf(address(this)), token1.balanceOf(address(this))
+        // );
+    }
+
+    function approveWrapper(IERC1155 tpft, address spender) external {
+        tpft.setApprovalForAll(spender, true);
     }
 
     function addLiquidity(uint256 _amount0, uint256 _amount1)
@@ -94,6 +106,7 @@ contract SimplePoolProductConstant {
         x / y = dx / dy
         dy = y / x * dx
         */
+        (uint256 reserve0, uint256 reserve1) = _reserves();
         if (reserve0 > 0 || reserve1 > 0) {
             require(
                 reserve0 * _amount1 == reserve1 * _amount0, "x / y != dx / dy"
@@ -161,9 +174,9 @@ contract SimplePoolProductConstant {
         require(shares > 0, "shares = 0");
         _mint(msg.sender, shares);
 
-        _update(
-            token0.balanceOf(address(this)), token1.balanceOf(address(this))
-        );
+        // _update(
+        //     token0.balanceOf(address(this)), token1.balanceOf(address(this))
+        // );
     }
 
     function removeLiquidity(uint256 _shares)
@@ -211,10 +224,10 @@ contract SimplePoolProductConstant {
 
         amount0 = (_shares * bal0) / totalSupply;
         amount1 = (_shares * bal1) / totalSupply;
-        require(amount0 > 0 && amount1 > 0, "amount0 or amount1 = 0");
+        // require(amount0 > 0 && amount1 > 0, "amount0 or amount1 = 0");
 
         _burn(msg.sender, _shares);
-        _update(bal0 - amount0, bal1 - amount1);
+        // _update(bal0 - amount0, bal1 - amount1);
 
         token0.transfer(msg.sender, amount0);
         token1.transfer(msg.sender, amount1);
@@ -236,6 +249,8 @@ contract SimplePoolProductConstant {
     function _min(uint256 x, uint256 y) private pure returns (uint256) {
         return x <= y ? x : y;
     }
+
+    
 }
 
 interface IERC20 {
