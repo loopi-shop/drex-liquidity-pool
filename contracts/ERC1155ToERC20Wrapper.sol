@@ -31,7 +31,7 @@ contract ERC1155ToERC20Wrapper is IERC20, Ownable {
     }
 
     function transfer(address recipient, uint256 amount) public virtual returns (bool) {
-        console.log("TRANSFER", _msgSender(), recipient);
+        // console.log("TRANSFER", _msgSender(), recipient);
         _1155Token_.safeTransferFrom(_msgSender(), recipient, _1155TokenId_, amount, "0x0");
         return true;
     }
@@ -45,7 +45,7 @@ contract ERC1155ToERC20Wrapper is IERC20, Ownable {
         }
     }
 
-    function approve(address spender, uint256 amount) public virtual returns (bool) {
+    function approve(address spender, uint256) public virtual returns (bool) {
         _1155Token_.setApprovalForAll(address(this), true);
         _1155Token_.setApprovalForAll(spender, true);
         return true;
