@@ -41,6 +41,35 @@ contract SimplePoolProductConstant is ERC1155Holder {
         external
         returns (uint256 amountOut)
     {
+        bool isToken0 = _tokenIn == address(token0);
+        (IERC20 tokenIn, IERC20 tokenOut)
+        = isToken0
+            ? (token0, token1)
+            : (token1, token0);
+
+        amountOut = getAmountOut(_tokenIn, _amountIn);
+        
+        tokenIn.transferFrom(msg.sender, address(this), _amountIn);
+
+        tokenOut.transfer(msg.sender, amountOut);
+
+        // _update(
+        //     token0.balanceOf(address(this)), token1.balanceOf(address(this))
+        // );
+    }
+
+    function price(address _tokenIn, uint256 _amountIn)
+        public view
+        returns (uint256 _price)
+    {
+        uint256 amountOut = getAmountOut(_tokenIn, _amountIn); 
+        _price = _amountIn / amountOut;
+    }
+
+    function getAmountOut(address _tokenIn, uint256 _amountIn)
+        public view
+        returns (uint256 amountOut)
+    {
         require(
             _tokenIn == address(token0) || _tokenIn == address(token1),
             "invalid token"
@@ -50,12 +79,11 @@ contract SimplePoolProductConstant is ERC1155Holder {
         (uint256 reserve0, uint256 reserve1) = _reserves();
 
         bool isToken0 = _tokenIn == address(token0);
-        (IERC20 tokenIn, IERC20 tokenOut, uint256 reserveIn, uint256 reserveOut)
+        (uint256 reserveIn, uint256 reserveOut)
         = isToken0
-            ? (token0, token1, reserve0, reserve1)
-            : (token1, token0, reserve1, reserve0);
+            ? (reserve0, reserve1)
+            : (reserve1, reserve0);
 
-        tokenIn.transferFrom(msg.sender, address(this), _amountIn);
 
         /*
         How much dy for dx?
@@ -72,9 +100,7 @@ contract SimplePoolProductConstant is ERC1155Holder {
         uint256 amountInWithFee = (_amountIn * 997) / 1000;
         amountOut =
             (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
-
-        tokenOut.transfer(msg.sender, amountOut);
-
+            
         // _update(
         //     token0.balanceOf(address(this)), token1.balanceOf(address(this))
         // );

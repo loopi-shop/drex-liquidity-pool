@@ -9,11 +9,10 @@ import hre, { ethers } from "hardhat";
 describe("SimplePool", function () {
   
   async function deploySimplePool() {
-    const [owner, otherAccount] = await hre.ethers.getSigners();
+    const [owner, investor, swapUser] = await hre.ethers.getSigners();
 
     const DREX = await hre.ethers.getContractFactory("Drex");
-    const drex1 = await DREX.deploy(owner.address);
-    // const drex2 = await DREX.deploy(owner.address);
+    const drex = await DREX.deploy(owner.address);
     const TPFT = await hre.ethers.getContractFactory("TPFT");
     const tpft = await TPFT.deploy(owner.address);
 
@@ -22,107 +21,189 @@ describe("SimplePool", function () {
     // console.log(tpft.target);
     
     const SimplePool = await hre.ethers.getContractFactory("SimplePoolProductConstant");
-    const simplePool = await SimplePool.deploy(drex1.target, wTpft.target);
+    const simplePool = await SimplePool.deploy(drex.target, wTpft.target);
 
-    await drex1.approve(simplePool.target, ethers.MaxUint256);
-    // await drex2.approve(simplePool.target, ethers.MaxUint256);
+    await drex.approve(simplePool.target, ethers.MaxUint256);
     await tpft.setApprovalForAll(wTpft.target, true);
-    // await tpft.setApprovalForAll(simplePool.target, true);
-    // await wTpft.approve(simplePool.target, ethers.MaxUint256);
     await simplePool.approveWrapper(tpft.target, wTpft.target);
     await simplePool.approveWrapper(tpft.target, owner.address);//burn
 
     console.log({
       owner: owner.address,
+      investor: investor.address,
+      swapUser: swapUser.address,
       simplePool: simplePool.target,
-      drex1: drex1.target,
+      drex: drex.target,
       // drex2: drex2.target,
       tpft: tpft.target,
       wTpft: wTpft.target,
     })
 
-    return { simplePool, owner, otherAccount, drex1, tpft, wTpft };
+    return { simplePool, owner, investor, swapUser, drex, tpft, wTpft };
   }
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
-  // async function deployOneYearLockFixture() {
-  //   const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  //   const ONE_GWEI = 1_000_000_000;
-
-  //   const lockedAmount = ONE_GWEI;
-  //   const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
-
-  //   // Contracts are deployed using the first signer/account by default
-  //   const [owner, otherAccount] = await hre.ethers.getSigners();
-
-  //   const Lock = await hre.ethers.getContractFactory("Lock");
-  //   const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  //   return { lock, unlockTime, lockedAmount, owner, otherAccount };
-  // }
 
   describe("Deployment", function () {
-    it("Should deploy", async function () {
-      const { simplePool, drex1, tpft, wTpft, owner } = await loadFixture(deploySimplePool);
+    // it("Should deploy", async function () {
+    //   const { simplePool, drex, tpft, wTpft, owner } = await loadFixture(deploySimplePool);
 
-      await drex1.mint(owner.address, ethers.parseEther("1000"));
+    //   await drex.mint(owner.address, ethers.parseEther("1000"));
 
-      // await drex2.mint(owner.address, ethers.parseEther("1000"));
+    //   // await drex2.mint(owner.address, ethers.parseEther("1000"));
 
-      await tpft.mint(owner, 1, ethers.parseEther("1000"), "0x");
+    //   await tpft.mint(owner, 1, ethers.parseEther("1000"), "0x");
 
-      await simplePool.addLiquidity(ethers.parseEther("500"), ethers.parseEther("500"));
+    //   await simplePool.addLiquidity(ethers.parseEther("500"), ethers.parseEther("500"));
 
-      console.log("Shares", await simplePool.balanceOf(owner.address)); 
+    //   console.log("Shares", await simplePool.balanceOf(owner.address)); 
 
-      console.log("Saldo drex1", await drex1.balanceOf(owner.address));
-      // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
-      console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
-      console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
-      console.log("APPROVE", await tpft.isApprovedForAll("0x0165878A594ca255338adfa4d48449f69242Eb8F", "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"));
+    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
+    //   // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
+    //   console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
+    //   console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
+     
+    //   await simplePool.swap(drex.target, ethers.parseEther("10"));
 
-      await simplePool.swap(drex1.target, ethers.parseEther("10"));
-
-      console.log("Saldo drex1", await drex1.balanceOf(owner.address));
-      // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
-      console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
-      console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
+    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
+    //   // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
+    //   console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
+    //   console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
 
 
-      await simplePool.swap(wTpft.target, ethers.parseEther("10"));
+    //   await simplePool.swap(wTpft.target, ethers.parseEther("10"));
 
-      console.log("Saldo drex1", await drex1.balanceOf(owner.address));
-      // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
-      console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
-      console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
+    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
+    //   // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
+    //   console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
+    //   console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
 
-      // expect(await lock.unlockTime()).to.equal(unlockTime);
+    //   // expect(await lock.unlockTime()).to.equal(unlockTime);
+    // });
+
+    it("Should add liquidity", async function () {
+      const { simplePool, drex, tpft, wTpft, investor } = await loadFixture(deploySimplePool);
+
+      await drex.mint(investor.address, ethers.parseEther("1000"));
+      await tpft.mint(investor, 1, ethers.parseEther("1000"), "0x");
+
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseEther("500"), ethers.parseEther("500"));
+
+      const shares = await simplePool.balanceOf(investor.address);
+      // console.log("Shares", shares); 
+
+      expect(shares).to.equal(ethers.parseEther("500"));
     });
 
-    it("Should liquidate TPFT", async function () {
-      const { simplePool, drex1, tpft, wTpft, owner } = await loadFixture(deploySimplePool);
+    it("Should remove liquidity", async function () {
+      const { simplePool, drex, tpft, wTpft, investor } = await loadFixture(deploySimplePool);
 
-      await drex1.mint(owner.address, ethers.parseEther("1000"));
+      await drex.mint(investor.address, ethers.parseEther("1000"));
+      await tpft.mint(investor, 1, ethers.parseEther("1000"), "0x");
 
-      // await drex2.mint(owner.address, ethers.parseEther("1000"));
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseEther("500"), ethers.parseEther("500"));
 
-      await tpft.mint(owner, 1, ethers.parseEther("1000"), "0x");
+      const shares = await simplePool.balanceOf(investor.address);
+      await simplePool.connect(investor).removeLiquidity(shares);
 
-      await simplePool.addLiquidity(ethers.parseEther("1000"), ethers.parseEther("1000"));
+      expect(await drex.balanceOf(investor)).to.equal(ethers.parseEther("1000"));
+      expect(await tpft.balanceOf(investor, 1)).to.equal(ethers.parseEther("1000"));
+    });
 
-      const tpftTotalSupply = await tpft["totalSupply()"]();
+    it("Should swap drex to tpft", async function () {
+      const { simplePool, drex, tpft, wTpft, investor, swapUser } = await loadFixture(deploySimplePool);
+
+      await drex.mint(investor.address, ethers.parseEther("100000000"));
+      await tpft.mint(investor, 1, ethers.parseEther("100000000"), "0x");
+
+      await drex.mint(swapUser.address, ethers.parseEther("1000"));
+
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseEther("100000000"), ethers.parseEther("100000000"));
+
+      await drex.connect(swapUser).approve(simplePool.target, ethers.MaxUint256);
       
-      console.log("Shares", await simplePool.balanceOf(owner.address));  
-      await tpft.burn(simplePool.target, 1, tpftTotalSupply);
-      await drex1.mint(owner.address, ethers.parseEther("10000"));
-      console.log("Shares", await simplePool.balanceOf(owner.address)); 
+      const amountOut = await simplePool.getAmountOut(drex.target, ethers.parseEther("100"));
 
-      console.log("Saldo drex1", await drex1.balanceOf(owner.address));
-      await simplePool.removeLiquidity(await simplePool.balanceOf(owner.address));
-      console.log("Saldo drex1", await drex1.balanceOf(owner.address));
+      await simplePool.connect(swapUser).swap(drex.target, ethers.parseEther("100"));
 
+      expect(await drex.balanceOf(swapUser.address)).to.equal(ethers.parseEther("900"));
+      expect(await tpft.balanceOf(swapUser.address, 1)).to.equal(amountOut);
     });
+
+    it("Should swap tpft to drex", async function () {
+      const { simplePool, drex, tpft, wTpft, investor, swapUser } = await loadFixture(deploySimplePool);
+
+      await drex.mint(investor.address, ethers.parseEther("100000000"));
+      await tpft.mint(investor, 1, ethers.parseEther("100000000"), "0x");
+
+      await tpft.mint(swapUser.address, 1, ethers.parseEther("1000"), "0x");
+
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseEther("100000000"), ethers.parseEther("100000000"));
+
+      await tpft.connect(swapUser).setApprovalForAll(wTpft.target, true);
+      
+      const amountOut = await simplePool.getAmountOut(wTpft.target, ethers.parseEther("100"));
+
+      await simplePool.connect(swapUser).swap(wTpft.target, ethers.parseEther("100"));
+
+      expect(await tpft.balanceOf(swapUser.address, 1)).to.equal(ethers.parseEther("900"));
+      expect(await drex.balanceOf(swapUser.address)).to.equal(amountOut);
+    });
+
+    it("Should liquidate tpft", async function () {
+      const { simplePool, drex, tpft, wTpft, investor } = await loadFixture(deploySimplePool);
+
+      await drex.mint(investor.address, ethers.parseEther("1000"));
+      await tpft.mint(investor, 1, ethers.parseEther("1000"), "0x");
+
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseEther("1000"), ethers.parseEther("1000"));
+
+      //Liquidate
+      const tpftTotalSupply = await tpft["totalSupply()"]();
+      await tpft.burn(simplePool.target, 1, tpftTotalSupply);
+      await drex.mint(simplePool.target, tpftTotalSupply * ethers.parseEther("10000"));
+
+      const drexAvailableInPool = await drex.balanceOf(simplePool.target);
+
+      const shares = await simplePool.balanceOf(investor.address);
+      await simplePool.connect(investor).removeLiquidity(shares);
+
+      expect(await drex.balanceOf(investor)).to.equal(drexAvailableInPool);
+      expect(await tpft.balanceOf(investor, 1)).to.equal(ethers.parseEther("0"));
+    });
+
+
+    // it("Should liquidate TPFT", async function () {
+    //   const { simplePool, drex, tpft, wTpft, owner } = await loadFixture(deploySimplePool);
+
+    //   await drex.mint(owner.address, ethers.parseEther("1000"));
+
+    //   // await drex2.mint(owner.address, ethers.parseEther("1000"));
+
+    //   await tpft.mint(owner, 1, ethers.parseEther("1000"), "0x");
+
+    //   await simplePool.addLiquidity(ethers.parseEther("1000"), ethers.parseEther("1000"));
+
+    //   const tpftTotalSupply = await tpft["totalSupply()"]();
+      
+    //   console.log("Shares", await simplePool.balanceOf(owner.address));  
+    //   await tpft.burn(simplePool.target, 1, tpftTotalSupply);
+    //   await drex.mint(simplePool.target, ethers.parseEther("10000"));
+    //   console.log("Shares", await simplePool.balanceOf(owner.address)); 
+
+    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
+    //   await simplePool.removeLiquidity(await simplePool.balanceOf(owner.address));
+    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
+
+    // });
 
     // it("Should receive and store the funds to lock", async function () {
     //   const { lock, lockedAmount } = await loadFixture(
