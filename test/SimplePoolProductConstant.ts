@@ -6,7 +6,7 @@ import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre, { ethers } from "hardhat";
 
-describe("SimplePool", function () {
+describe("SimplePoolProductConstant", function () {
   
   async function deploySimplePool() {
     const [owner, investor, swapUser] = await hre.ethers.getSigners();
@@ -42,43 +42,7 @@ describe("SimplePool", function () {
     return { simplePool, owner, investor, swapUser, drex, tpft, wTpft };
   }
 
-  describe("Deployment", function () {
-    // it("Should deploy", async function () {
-    //   const { simplePool, drex, tpft, wTpft, owner } = await loadFixture(deploySimplePool);
-
-    //   await drex.mint(owner.address, ethers.parseEther("1000"));
-
-    //   // await drex2.mint(owner.address, ethers.parseEther("1000"));
-
-    //   await tpft.mint(owner, 1, ethers.parseEther("1000"), "0x");
-
-    //   await simplePool.addLiquidity(ethers.parseEther("500"), ethers.parseEther("500"));
-
-    //   console.log("Shares", await simplePool.balanceOf(owner.address)); 
-
-    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
-    //   // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
-    //   console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
-    //   console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
-     
-    //   await simplePool.swap(drex.target, ethers.parseEther("10"));
-
-    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
-    //   // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
-    //   console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
-    //   console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
-
-
-    //   await simplePool.swap(wTpft.target, ethers.parseEther("10"));
-
-    //   console.log("Saldo drex", await drex.balanceOf(owner.address));
-    //   // console.log("Saldo drex2", await drex2.balanceOf(owner.address));
-    //   console.log("Saldo tpft", await tpft.balanceOf(owner.address, 1));
-    //   console.log("Saldo wTpft", await wTpft.balanceOf(owner.address));
-
-    //   // expect(await lock.unlockTime()).to.equal(unlockTime);
-    // });
-
+  describe("Functional Tests", function () {
     it("Should add liquidity", async function () {
       const { simplePool, drex, tpft, wTpft, investor } = await loadFixture(deploySimplePool);
 
@@ -178,6 +142,28 @@ describe("SimplePool", function () {
 
       expect(await drex.balanceOf(investor)).to.equal(drexAvailableInPool);
       expect(await tpft.balanceOf(investor, 1)).to.equal(ethers.parseEther("0"));
+    });
+
+
+    it("Should get price from tpft to drex", async function () {
+      const { simplePool, drex, tpft, wTpft, investor, swapUser } = await loadFixture(deploySimplePool);
+
+      await drex.mint(investor.address, ethers.parseEther("10000000000000"));
+      await tpft.mint(investor, 1, ethers.parseEther("1000000000"), "0x");
+
+      await tpft.mint(swapUser.address, 1, ethers.parseEther("1000"), "0x");
+
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseEther("10000000000000"), ethers.parseEther("1000000000"));
+
+      await tpft.connect(swapUser).setApprovalForAll(wTpft.target, true);
+      
+      const amountOutDrexTpft = await simplePool.getAmountOut.staticCall(drex.target, ethers.parseEther("1"));
+      const amountOutTpftDrex = await simplePool.getAmountOut.staticCall(wTpft.target, ethers.parseEther("1"));
+
+      console.log("price", ethers.formatEther(await simplePool.price(drex.target, ethers.parseEther("1"))));
+      console.log("price", ethers.formatEther(await simplePool.price(wTpft.target, ethers.parseEther("1"))));
     });
 
 

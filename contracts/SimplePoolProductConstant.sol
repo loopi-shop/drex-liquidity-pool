@@ -63,7 +63,7 @@ contract SimplePoolProductConstant is ERC1155Holder {
         returns (uint256 _price)
     {
         uint256 amountOut = getAmountOut(_tokenIn, _amountIn); 
-        _price = _amountIn / amountOut;
+        _price = amountOut * 1_000_000_000_000_000_000 / _amountIn;
     }
 
     function getAmountOut(address _tokenIn, uint256 _amountIn)
