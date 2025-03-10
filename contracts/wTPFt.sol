@@ -90,7 +90,9 @@ contract WrappedTPFt is ERC20, ERC20Pausable, Ownable, ERC20Permit, ERC1155Holde
         }
 
         // Ensure the user has enough wrapped tokens to redeem
-        require(balanceOf(msg.sender) >= _amount, "WrappedTPFt: insufficient balance");
+        if (balanceOf(msg.sender) < _amount) {
+            revert InsufficientBalance(msg.sender, balanceOf(msg.sender), _amount);
+        }
 
         // Spend the user's allowance and burn the equivalent amount of wrapped tokens
         _spendAllowance(msg.sender, address(this), _amount);
