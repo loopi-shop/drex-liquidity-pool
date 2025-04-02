@@ -8,7 +8,7 @@ import abiRealDigital from '../../abis/RealDigital.json';
   async function main() {
     const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-    console.log("Saldo Drex", drex.balanceOf(config.MAIN_WALLET_ADDRESS));
+    console.log("Saldo Drex", await drex.balanceOf(config.MAIN_WALLET_ADDRESS));
   
   }
 
