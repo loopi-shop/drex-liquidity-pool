@@ -1,5 +1,6 @@
 import hre, { ethers } from "hardhat";
 import abiAddressDiscovery from "../../abis/AddressDiscovery.json";
+import * as config from "../config/config";
 
 
 
@@ -9,7 +10,7 @@ async function main() {
    */
   const addressDiscrovery = await ethers.getContractAt(
     abiAddressDiscovery,
-    '<Endereço do Contrato Address Discovery>'
+    config.ADDRESS_DISCOVERY_ADDRESS
   );
 
   /**
