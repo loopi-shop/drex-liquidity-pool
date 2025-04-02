@@ -8,7 +8,7 @@
     console.log("Value set!");
 
     console.log("Getting value");
-    console.log(await helloWorld.value());
+    console.log(await helloWorld.value);
   }
 
   main();
