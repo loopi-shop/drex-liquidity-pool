@@ -11,13 +11,13 @@ async function main() {
 
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-  await drex.transfer("0x7E4bd9599324EdE4d15454C3fAC2c4a07A59781B", ethers.parseEther("1"));
+  await drex.transfer("0x7E4bd9599324EdE4d15454C3fAC2c4a07A59781B", 1);
 
   console.log("Transfer drex!");
 
   const wTpft = await ethers.getContractAt(abiTpftIERC1155, config.WRAPPER_ADDRESS);
 
-  await wTpft.transfer("0x7E4bd9599324EdE4d15454C3fAC2c4a07A59781B", ethers.parseEther("1"));
+  await wTpft.transfer("0x7E4bd9599324EdE4d15454C3fAC2c4a07A59781B", 1);
 
   console.log("Transfer tpft!");
 
