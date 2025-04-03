@@ -13,10 +13,16 @@ async function main() {
   const wTpft = await ethers.getContractAt("ERC1155ToERC20Wrapper", config.WRAPPER_ADDRESS);
 
 
+  
   await drex.approve(simplePool.target, ethers.MaxUint256);
+  console.log("Drex approved!");
   await tpft.setApprovalForAll(wTpft.target, true);
+  console.log("Tpft approved!");
   await simplePool.approveWrapper(tpft.target, wTpft.target);
+  console.log("Pool approved 1!");
   await simplePool.approveWrapper(tpft.target, owner.address);//burn
+  console.log("Pool approved 2!");
+  
 }
 
 
