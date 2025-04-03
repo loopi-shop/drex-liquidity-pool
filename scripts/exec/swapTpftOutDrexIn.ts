@@ -26,7 +26,7 @@ async function main() {
 
   console.log(`Estimativa de retorno para ${amountIn} tpft como input: `, amountOut);
 
-  await simplePool.swap(TPFt.target, amountIn);
+  await simplePool.swap(config.WRAPPER_ADDRESS, amountIn);
   console.log("Swap realizado!");
 
   await sleep(10000);

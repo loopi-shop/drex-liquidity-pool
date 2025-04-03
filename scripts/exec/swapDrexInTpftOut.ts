@@ -23,7 +23,7 @@ async function main() {
 
   console.log(`Estimativa de retorno para ${amountIn} drex como input: `, amountOut);
 
-  await simplePool.swap(drex.target, amountIn);
+  await simplePool.swap(config.DREX_ADDRESS, amountIn);
   console.log("Swap realizado!");
 
   balanceDrex = await drex.balanceOf(config.MAIN_WALLET_ADDRESS);
