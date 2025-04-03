@@ -1,6 +1,6 @@
 import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
-import abiTpft from "../../abis/ITPFt.json";
+import abiTpftIERC1155 from "../../abis/IERC1155.json";
 import abiRealDigital from '../../abis/RealDigital.json';
 
 async function main() {
@@ -8,7 +8,7 @@ async function main() {
   const [owner] = await ethers.getSigners();
   
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
-  const tpft = await ethers.getContractAt(abiTpft, config.TPFT_ADDRESS);
+  const tpft = await ethers.getContractAt(abiTpftIERC1155, config.TPFT_ADDRESS);
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
   const wTpft = await ethers.getContractAt("ERC1155ToERC20Wrapper", config.WRAPPER_ADDRESS);
 
