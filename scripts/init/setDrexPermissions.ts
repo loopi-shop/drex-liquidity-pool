@@ -9,7 +9,11 @@ async function main() {
     const enableAccount = await ethers.getContractAt(abiRealDigitalEnableAccount, config.REAL_DIGITAL_ENABLE_ACCOUNT_ADDRESS);
     
     // Após ter um endereço habilitado pelo BACEN, a instituição pode habilitar novos endereços
-    await enableAccount.enableAccount("0x7E4bd9599324EdE4d15454C3fAC2c4a07A59781B");
+    await enableAccount.enableAccount(config.WRAPPER_ADDRESS);
+    console.log("Wrapper enabled");
+
+    await enableAccount.enableAccount(config.POOL_ADDRESS);
+    console.log("Pool enabled");
   
 }
 
