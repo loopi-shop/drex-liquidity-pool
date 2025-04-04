@@ -8,9 +8,7 @@ async function main() {
 
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
 
-  await simplePool.addLiquidity(500, 500);
-
-  console.log("Liquidity added!");
+  let transaction = await simplePool.addLiquidity(500, 500);
 
   await sleep(10000);
 
