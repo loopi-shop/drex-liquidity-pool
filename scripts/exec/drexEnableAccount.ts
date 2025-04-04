@@ -3,16 +3,13 @@ import * as config from "../config/config";
 import abiRealDigitalEnableAccount from "../../abis/RealDigitalEnableAccount.json";
 
 async function main() {
+    const user = new ethers.Wallet(config.USER_WALLET_PK, ethers.provider);
 
     const enableAccount = await ethers.getContractAt(abiRealDigitalEnableAccount, config.REAL_DIGITAL_ENABLE_ACCOUNT_ADDRESS);
     
-    // Após ter um endereço habilitado pelo BACEN, a instituição pode habilitar novos endereços
-    await enableAccount.enableAccount(config.WRAPPER_ADDRESS);
-    console.log("Wrapper enabled");
-
-    await enableAccount.enableAccount(config.POOL_ADDRESS);
-    console.log("Pool enabled");
-  
+    console.log("Enabling wallet", user.address);
+    await enableAccount.enableAccount(user.address);
+    console.log("Enabled! Wallet", user.address);
 }
 
 main();
