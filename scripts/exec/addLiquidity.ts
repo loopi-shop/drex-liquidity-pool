@@ -4,18 +4,21 @@ import { sleep } from "../util/util";
 
 
 async function main() {
-  const [owner] = await ethers.getSigners();
+  const user = new ethers.Wallet(config.USER_WALLET_PK);
 
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
+
+  let shares = await simplePool.balanceOf(user.address);
+  console.log("Total shares antes:", shares);
 
   let transaction = await simplePool.addLiquidity(500, 500);
   console.log("AddLiquidity realizado! Transação", transaction.hash);
 
   await sleep(10000);
 
-  const shares = await simplePool.balanceOf(owner.address);
+  shares = await simplePool.balanceOf(user.address);
 
-  console.log("Total shares:", shares);
+  console.log("Total shares depois:", shares);
 }
 
 main();
