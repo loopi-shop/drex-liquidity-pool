@@ -1,9 +1,6 @@
 import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
-import abiRealDigital from '../../abis/RealDigital.json';
-import abiTpft from "../../abis/ITPFt.json";
-// import abiRealDigitalDefaultAccount from '../abi/RealDigitalDefaultAccount.json';
-
+import { sleep } from "../util/util";
 
 
 async function main() {
@@ -14,6 +11,8 @@ async function main() {
   await simplePool.addLiquidity(500, 500);
 
   console.log("Liquidity added!");
+
+  await sleep(10000);
 
   const shares = await simplePool.balanceOf(owner.address);
 

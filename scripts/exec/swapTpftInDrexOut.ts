@@ -2,11 +2,10 @@ import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
 import abiRealDigital from '../../abis/RealDigital.json';
 import abiTpft from "../../abis/ITPFt.json";
+import { sleep } from "../util/util";
 // import abiRealDigitalDefaultAccount from '../abi/RealDigitalDefaultAccount.json';
 
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 async function main() {
   const [owner] = await ethers.getSigners();

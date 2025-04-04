@@ -2,6 +2,7 @@ import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
 import abiRealDigital from '../../abis/RealDigital.json';
 import abiTpft from "../../abis/ITPFt.json";
+import { sleep } from "../util/util";
 // import abiRealDigitalDefaultAccount from '../abi/RealDigitalDefaultAccount.json';
 
 
@@ -23,8 +24,10 @@ async function main() {
 
   console.log(`Estimativa de retorno para ${amountIn} drex como input: `, amountOut);
 
-  await simplePool.swap(config.DREX_ADDRESS, amountIn);
-  console.log("Swap realizado!");
+  let transaction = await simplePool.swap(config.DREX_ADDRESS, amountIn);
+  console.log("Swap realizado! Transação", transaction.hash);
+
+  await sleep(10000);
 
   balanceDrex = await drex.balanceOf(config.MAIN_WALLET_ADDRESS);
   balanceOfTPFt = await TPFt.balanceOf(config.MAIN_WALLET_ADDRESS, config.TPFT_ID);
