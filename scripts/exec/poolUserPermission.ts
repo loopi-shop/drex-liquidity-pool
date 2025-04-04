@@ -5,9 +5,9 @@ import abiTpftIERC1155 from "../../abis/IERC1155.json";
 
 
 async function main() {
-  const user = new ethers.Wallet(config.USER_WALLET_PK);
+  const user = new ethers.Wallet(config.USER_WALLET_PK, ethers.provider);
 
-  console.log("Approving ", user.address);
+  console.log("Approving", user.address);
 
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
   const tpft = await ethers.getContractAt(abiTpftIERC1155, config.TPFT_ADDRESS);
@@ -17,7 +17,7 @@ async function main() {
   await (drex.connect(user) as any).approve(simplePool.target, ethers.MaxUint256);
   await (tpft.connect(user) as any).setApprovalForAll(wTpft.target, true);
 
-  console.log("Approved! Wallet ", user.address);  
+  console.log("Approved! Wallet", user.address);  
 
 
 }
