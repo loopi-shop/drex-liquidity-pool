@@ -1,6 +1,4 @@
-import hre, { ethers } from "hardhat";
-import * as config from "../config/config";
-import { sleep } from "../util/util";
+
 
 
 async function main() {
