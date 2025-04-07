@@ -12,13 +12,13 @@ async function main() {
 
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-  await drex.transfer(user.address, ethers.parseEther("500"));
+  await drex.transfer(user.address, 500);
 
   console.log("Transfer drex!");
 
   const wTpft = await ethers.getContractAt(abiTpftIERC1155, config.WRAPPER_ADDRESS);
 
-  await wTpft.transfer(user.address, ethers.parseEther("500"));
+  await wTpft.transfer(user.address, 500);
 
   console.log("Transfer tpft!");
 
