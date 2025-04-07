@@ -11,7 +11,7 @@ async function main() {
   let shares = await simplePool.balanceOf(user.address);
   console.log("Total shares antes:", shares);
 
-  let transaction = await simplePool.addLiquidity(500, 500);
+  let transaction = await simplePool.connect(user).addLiquidity(500, 500);
   console.log("AddLiquidity realizado! Transação", transaction.hash);
 
   await sleep(10000);
