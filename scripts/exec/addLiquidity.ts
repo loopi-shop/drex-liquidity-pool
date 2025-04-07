@@ -6,7 +6,7 @@ import { sleep } from "../util/util";
 async function main() {
   const user = new ethers.Wallet(config.USER_WALLET_PK, ethers.provider);
 
-  const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS, user);
+  const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
   
   let shares = await simplePool.balanceOf(user.address);
   console.log("Total shares antes:", shares);
