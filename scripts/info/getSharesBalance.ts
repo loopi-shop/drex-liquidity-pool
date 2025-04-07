@@ -8,10 +8,11 @@ import abiTpft from "../../abis/ITPFt.json";
 
 async function main() {
   const [owner] = await ethers.getSigners();
+  const user = new ethers.Wallet(config.USER_WALLET_PK, ethers.provider);
 
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
 
-  const shares = await simplePool.balanceOf(owner.address);
+  const shares = await simplePool.balanceOf(user.address);
 
   console.log("Total shares:", shares);
   
