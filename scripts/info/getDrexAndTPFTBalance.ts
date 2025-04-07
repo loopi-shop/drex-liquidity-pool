@@ -7,9 +7,10 @@ import abiTpft from "../../abis/ITPFt.json";
 
 
 async function main() {
+  const user = new ethers.Wallet(config.USER_WALLET_PK, ethers.provider);
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-  console.log("Saldo Drex", await drex.balanceOf(config.MAIN_WALLET_ADDRESS));
+  console.log("Saldo Drex", await drex.balanceOf(user.address));
 
 
 
@@ -23,7 +24,7 @@ async function main() {
 
   for (let index = 0; index < 5; index++) {
     const balanceOfTPFt = await TPFt.balanceOf(
-      config.MAIN_WALLET_ADDRESS,
+      user.address,
       index
     )
   
