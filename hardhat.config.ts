@@ -26,7 +26,7 @@ const config: HardhatUserConfig = {
     besu: {
       url: process.env.RPC_URL,
       gasPrice: 0,
-      accounts: [process.env.DEPLOYER_WALLET_PK!]
+      accounts: [deployerPk!]
     }
   }
 };
