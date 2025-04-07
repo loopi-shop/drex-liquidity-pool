@@ -1,7 +1,6 @@
 import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
 import abiRealDigital from '../../abis/RealDigital.json';
-import abiTpftIERC1155 from "../../abis/IERC1155.json";
 // import abiRealDigitalDefaultAccount from '../abi/RealDigitalDefaultAccount.json';
 
 
@@ -16,7 +15,7 @@ async function main() {
 
   console.log("Transfer drex!");
 
-  const wTpft = await ethers.getContractAt(abiTpftIERC1155, config.WRAPPER_ADDRESS);
+  const wTpft = await ethers.getContractAt("ERC1155ToERC20Wrapper", config.WRAPPER_ADDRESS);
 
   await wTpft.transfer(user.address, 500);
 
