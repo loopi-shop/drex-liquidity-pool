@@ -23,7 +23,7 @@ async function main() {
   const amountIn = 10;
   const amountOut = await simplePool.getAmountOut(config.WRAPPER_ADDRESS, amountIn);
 
-  console.log(`Estimativa de retorno para ${amountIn} tpft com input: `, amountOut);
+  console.log(`Estimativa de retorno para ${amountIn} tpft: `, amountOut);
 
   let transaction = await simplePool.swap(config.WRAPPER_ADDRESS, amountIn);
   console.log("Swap realizado! Transação", transaction.hash);
