@@ -12,6 +12,7 @@ async function main() {
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
   console.log("Saldo Drex", await drex.balanceOf(owner.address));
+  console.log("Decimals Drex", await drex.decimals());
 
 
 
@@ -34,6 +35,8 @@ async function main() {
     
     
   }
+
+  console.log("Decimals Tpft", await TPFt.decimals());
   
 
 }
