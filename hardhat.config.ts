@@ -5,12 +5,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 let deployerPk = process.env.DEPLOYER_WALLET_PK;
-console.log("1", deployerPk);
 if (deployerPk === undefined) {
-  console.log("if");
   deployerPk = process.env.USER_WALLET_PK;
 }
-console.log("2", deployerPk);
 
 const config: HardhatUserConfig = {
   solidity: {

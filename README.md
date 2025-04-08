@@ -3,7 +3,17 @@
 ## Setup Inicial
 ```shell
 npm install
-export USER_WALLET_PK=abc...
+```
+
+Fazer uma cópia do arquivo .env.example e criar o .env
+```shell
+cp .env.example .env
+```
+
+Editar o arquivo para as configurações do seu ambiente e carteiras a serem utilizadas, caso for apenas interagir com o pool é necessário somente configurar o RPC_URL com a url do RPC do besu e USER_WALLET_PK com a chave privada da carteira de usuário que irá executar as transações. 
+```shell
+RPC_URL=http://...
+USER_WALLET_PK=<Chave privada da carteira que ira executar as transações>
 ```
 
 Antes do primeiro uso, garanta que a carteira a ser utilizada esteja habilitada para DREX, contenha saldo para as operações e que os contratos do pool estejam autorizados (approve das moedas).
