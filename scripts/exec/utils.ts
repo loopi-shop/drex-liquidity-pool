@@ -13,7 +13,7 @@ export async function printBalances(address: string) {
   let balanceOfTPFt = await TPFt.balanceOf(address, config.TPFT_ID);
   let shares = await simplePool.balanceOf(address);
   
-  console.log("Total pool tokens:", shares.toString());
-  console.log("Saldo Drex:", balanceDrex);
-  console.log("Saldo TPFt:", balanceOfTPFt);
+  console.log("Saldo pool tokens:", shares.toString());
+  console.log("Saldo Drex:", ethers.formatUnits(balanceDrex, 2));
+  console.log("Saldo TPFt:", ethers.formatUnits(balanceOfTPFt, 2));
 }
