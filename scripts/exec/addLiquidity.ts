@@ -9,14 +9,14 @@ async function main() {
 
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
   
-  await printBalances(user);
+  await printBalances(user.address);
 
   let transaction = await simplePool.connect(user).addLiquidity(ethers.parseUnits("816274000", 2), ethers.parseUnits("50000", 2));
   console.log("Liquidez adicionada! Transação", transaction.hash);
 
   await sleep(10000);
 
-  await printBalances(user);
+  await printBalances(user.address);
 }
 
 main();

@@ -2,6 +2,7 @@ import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
 import abiRealDigital from '../../abis/RealDigital.json';
 import abiTpft from "../../abis/ITPFt.json";
+import { printBalances } from "../exec/utils";
 // import abiRealDigitalDefaultAccount from '../abi/RealDigitalDefaultAccount.json';
 
 
@@ -32,6 +33,9 @@ async function main() {
   
     //Saldo do TPFt.
     console.log(`Saldo TPFt id ${config.TPFT_ID}`, balanceOfTPFt.toString());
+
+
+    await printBalances(config.POOL_ADDRESS);
     
     
   // }
