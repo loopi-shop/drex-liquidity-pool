@@ -11,7 +11,7 @@ async function main() {
   const user = new ethers.Wallet(config.USER_WALLET_PK, ethers.provider);
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-  console.log("Saldo Drex", (await drex.balanceOf(owner.address)).toString());
+  console.log("Saldo Drex", (await drex.balanceOf(user.address)).toString());
   // console.log("Decimals Drex", await drex.decimals());
 
 
@@ -26,7 +26,7 @@ async function main() {
 
   // for (let index = 0; index < 5; index++) {
     const balanceOfTPFt = await TPFt.balanceOf(
-      owner.address,
+      user.address,
       config.TPFT_ID
     )
   
