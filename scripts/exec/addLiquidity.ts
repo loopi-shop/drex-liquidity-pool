@@ -9,7 +9,7 @@ async function main() {
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
   
   let shares = await simplePool.balanceOf(user.address);
-  console.log("Total shares antes:", shares);
+  console.log("Total shares antes:", shares.toString());
 
   let transaction = await simplePool.connect(user).addLiquidity(500, 500);
   console.log("AddLiquidity realizado! Transação", transaction.hash);
@@ -18,7 +18,7 @@ async function main() {
 
   shares = await simplePool.balanceOf(user.address);
 
-  console.log("Total shares depois:", shares);
+  console.log("Total shares depois:", shares.toString());
 }
 
 main();

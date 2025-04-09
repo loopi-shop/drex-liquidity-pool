@@ -26,6 +26,7 @@ npx hardhat run scripts/exec/poolUserPermissions.ts --network besu
 
 ## Adicionar liquidez no pool.
 Garanta que a carteira tenha saldo maior ou igual aos valores de desejados do par de moedas (TPFt e DREX).
+Para TPFt este pool utiliza o token representado pelo id 2 (ERC1155).
 Antes de executar edite os valores no script.
 ```shell
 npx hardhat run scripts/exec/addLiquidity.ts --network besu
