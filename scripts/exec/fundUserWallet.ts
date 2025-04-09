@@ -11,7 +11,7 @@ async function main() {
 
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-//   await drex.transfer(user.address, ethers.parseUnits("816274000", 2));
+  await drex.transfer(user.address, ethers.parseUnits("816274000", 2));
 
   console.log("Transfer drex!");
 
