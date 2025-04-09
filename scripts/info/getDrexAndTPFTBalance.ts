@@ -39,9 +39,12 @@ async function main() {
   console.log("Decimals Tpft", await TPFt.decimals());
 
   console.log("TpftId", await TPFt.getTPFtId(
-    "LTN",
-    "100000",
-    1797292800
+    {
+      acronym: 'LTN',
+      code: '100000',
+      // A função Math.floor(date.getTime() / 1000) transformar data milissegundos em segundos(timestamp Unix)
+      maturityDate: 1797292800,
+    }
   ));
   
 
