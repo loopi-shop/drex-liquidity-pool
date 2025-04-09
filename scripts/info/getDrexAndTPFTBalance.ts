@@ -34,8 +34,9 @@ async function main() {
     //Saldo do TPFt.
     console.log(`Saldo TPFt id ${config.TPFT_ID}`, balanceOfTPFt.toString());
 
-
     await printBalances(config.POOL_ADDRESS);
+
+    await printBalances(owner.address);
     
     
   // }
