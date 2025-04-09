@@ -47,6 +47,23 @@ async function main() {
     }
   ));
   
+  console.log("TpftId", await TPFt.getTPFtId(
+    {
+      acronym: 'LTN',
+      code: '100000',
+      // A função Math.floor(date.getTime() / 1000) transformar data milissegundos em segundos(timestamp Unix)
+      maturityDate: 1731628800,
+    }
+  ));
+
+  console.log("TpftId", await TPFt.getTPFtId(
+    {
+      acronym: 'LTN',
+      code: '100000',
+      // A função Math.floor(date.getTime() / 1000) transformar data milissegundos em segundos(timestamp Unix)
+      maturityDate: 1703203200,
+    }
+  ));
 
 }
 
