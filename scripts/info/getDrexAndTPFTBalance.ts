@@ -43,7 +43,7 @@ async function main() {
       acronym: 'LTN',
       code: '100000',
       // A função Math.floor(date.getTime() / 1000) transformar data milissegundos em segundos(timestamp Unix)
-      maturityDate: 1797292800,
+      maturityDate: 1733011200,
     }
   ));
   
