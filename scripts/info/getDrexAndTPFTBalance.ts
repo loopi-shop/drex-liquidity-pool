@@ -37,6 +37,12 @@ async function main() {
   }
 
   console.log("Decimals Tpft", await TPFt.decimals());
+
+  console.log("TpftId", await TPFt.getTPFtId(
+    "LTN",
+    "100000",
+    1797292800
+  ));
   
 
 }
