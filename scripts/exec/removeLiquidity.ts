@@ -1,6 +1,7 @@
 import hre, { ethers } from "hardhat";
 import * as config from "../config/config";
 import { sleep } from "../util/util";
+import { printBalances } from "./utils";
 
 
 async function main() {
@@ -9,17 +10,16 @@ async function main() {
 
   const simplePool = await ethers.getContractAt("SimplePoolProductConstant", config.POOL_ADDRESS);
 
-  let shares = await simplePool.balanceOf(user.address);
-  console.log("Total shares antes:", shares);
+  await printBalances(owner.address);
 
-  let transaction = await simplePool.connect(user).removeLiquidity(shares)
-  console.log("RemoveLiquidity realizado! Transação", transaction.hash);
+  let shares = await simplePool.balanceOf(owner.address);
+  let transaction = await simplePool.connect(owner).removeLiquidity(shares)
+  console.log("Liquidez removida! Transação", transaction.hash);
 
   await sleep(10000);
 
-  shares = await simplePool.balanceOf(user.address);
-
-  console.log("Total shares depois:", shares);
+  await printBalances(owner.address);
+  
 }
 
 main();
