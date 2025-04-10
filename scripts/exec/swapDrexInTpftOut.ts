@@ -15,19 +15,17 @@ async function main() {
  
   await printBalances(user.address);
 
-  const amountIn = 1;
+  const amountIn = ethers.parseUnits("81627,4", 2);
   const amountOut = await simplePool.getAmountOut(config.DREX_ADDRESS, amountIn);
 
-  console.log(`Estimativa de retorno para ${amountIn} drex: `, amountOut);
+  console.log(`Estimativa de retorno para compra de TPFt com R$ ${ethers.formatUnits(amountIn, 2)} drex é de ${ethers.formatUnits(amountOut, 2)} TPFt`);
 
   let transaction = await simplePool.connect(user).swap(config.DREX_ADDRESS, amountIn);
-  console.log("Swap realizado! Transação", transaction.hash);
-
-  await printBalances(user.address);
+  console.log("Compra realizada! Transação", transaction.hash);
 
   await sleep(10000);
 
-  
+  await printBalances(user.address);
 
 }
 
