@@ -12,8 +12,8 @@ async function main() {
 
   await printBalances(user.address);
 
-  let shares = await simplePool.balanceOf(user.address);
-  let transaction = await simplePool.connect(user).removeLiquidity(shares)
+  // let shares = await simplePool.balanceOf(user.address);
+  let transaction = await simplePool.connect(user).removeLiquidity(10000);
   console.log("Liquidez removida! Transação", transaction.hash);
 
   await sleep(10000);
