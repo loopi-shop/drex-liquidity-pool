@@ -11,13 +11,13 @@ async function main() {
 
   const drex = await ethers.getContractAt(abiRealDigital, config.DREX_ADDRESS);
 
-  await drex.transfer(user.address, 500);
+  await drex.transfer(user.address, ethers.parseUnits("816274000", 2));
 
   console.log("Transfer drex!");
 
   const wTpft = await ethers.getContractAt("ERC1155ToERC20Wrapper", config.WRAPPER_ADDRESS);
-
-  await wTpft.transfer(user.address, 500);
+                                                         
+  await wTpft.transfer(user.address, ethers.parseUnits("50000", 2));
 
   console.log("Transfer tpft!");
 
