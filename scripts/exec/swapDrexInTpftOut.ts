@@ -15,7 +15,7 @@ async function main() {
  
   await printBalances(user.address);
 
-  const amountIn = ethers.parseUnits("81627,4", 2);
+  const amountIn = ethers.parseUnits("81627.4", 2);
   const amountOut = await simplePool.getAmountOut(config.DREX_ADDRESS, amountIn);
 
   console.log(`Estimativa de retorno para compra de TPFt com R$ ${ethers.formatUnits(amountIn, 2)} drex é de ${ethers.formatUnits(amountOut, 2)} TPFt`);

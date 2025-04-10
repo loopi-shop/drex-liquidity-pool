@@ -89,12 +89,31 @@ Remove Liquidity realizado! Transação 0xa194d63caa3fed5d5481b86c434c852299e577
 Total shares depois: 0n
 ```
 
+Exemplos das transações executadas na rede do drex de um mesmo usuário que adicionou inicialmente a liquidez de 50000 TPFt a um preço de R$ 16.325,48 cada TPFt, ou seja, o equivalente a R$ 816.274.000.
+
+Adicionando liquidez
 
 npx hardhat run scripts/exec/addLiquidity.ts --network besu
 Saldo pool tokens: 0
 Saldo Drex: 816274013.29
 Saldo TPFt: 50008.35
-Liquidez adicionada! Transação 0x84126a063ae77d4ff33ca7f90ec12797082857cc062d5ecad839ef5abfa7f602
+Liquidez adicionada! Transação 0xe3f580e5be0d884c60c3c35a5d9eedd4303ac879ea0d53d7863b79350017075f
 Saldo pool tokens: 638856008
 Saldo Drex: 13.29
 Saldo TPFt: 8.35
+
+Venda de 8 TPFt
+
+npx hardhat run scripts/exec/swapTpftInDrexOut.ts --network besu
+Saldo pool tokens: 638856008
+Saldo Drex: 13.29
+Saldo TPFt: 8.35
+Estimativa de retorno para compra de 8.0 tpft é de 130093.33 drex
+Compra realizada! Transação 0x72ed54eac74d85b68e4cae3ac1f7f6154c8ec207f5e0bd416bd108d73d5dea1a
+Saldo pool tokens: 638856008
+Saldo Drex: 130106.62
+Saldo TPFt: 0.35
+
+Compra de TPFt com entrada de R$ 81.627,4
+
+
