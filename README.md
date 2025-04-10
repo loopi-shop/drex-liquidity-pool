@@ -41,7 +41,7 @@ npx hardhat run scripts/exec/swapDrexInTpftOut.ts --network besu
 ```
 
 ## Venda de TPFT
-Garanta que a carteira tenha saldo maior ou igual ao valor de desejado em TPFt para venda.
+Garanta que a carteira tenha saldo maior ou igual ao valor desejado em TPFt para venda.
 Este pool utiliza o TPFt representado pelo id 2 do padrão ERC1155.
 Antes de executar edite os valores no script.
 ```shell
