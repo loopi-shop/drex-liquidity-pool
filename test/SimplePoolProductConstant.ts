@@ -98,6 +98,30 @@ describe("SimplePoolProductConstant", function () {
       expect(await tpft.balanceOf(swapUser.address, 1)).to.equal(amountOut);
     });
 
+    it("Should add liquidity after swap", async function () {
+      const { simplePool, drex, tpft, wTpft, investor, swapUser } = await loadFixture(deploySimplePool);
+
+      await drex.mint(investor.address, ethers.parseUnits("8162740000", 2));
+      await tpft.mint(investor, 1, ethers.parseUnits("500000", 2), "0x");
+
+      await drex.mint(swapUser.address, ethers.parseUnits("16325.48", 2));
+
+      await drex.connect(investor).approve(simplePool.target, ethers.MaxUint256);
+      await tpft.connect(investor).setApprovalForAll(wTpft.target, true);
+      await simplePool.connect(investor).addLiquidity(ethers.parseUnits("816274000", 2), ethers.parseUnits("50000", 2));
+
+      await drex.connect(swapUser).approve(simplePool.target, ethers.MaxUint256);
+      
+      const amountOut = await simplePool.getAmountOut(drex.target, ethers.parseUnits("16325.48", 2));
+
+      await simplePool.connect(swapUser).swap(drex.target, ethers.parseUnits("16325.48", 2));
+
+      await simplePool.connect(investor).addLiquidity(ethers.parseUnits("816274000", 2), ethers.parseUnits("50000", 2));
+
+      // expect(await drex.balanceOf(swapUser.address)).to.equal(ethers.parseUnits("900", 2));
+      expect(await tpft.balanceOf(swapUser.address, 1)).to.equal(amountOut);
+    });
+
     it("Should swap tpft to drex", async function () {
       const { simplePool, drex, tpft, wTpft, investor, swapUser } = await loadFixture(deploySimplePool);
 

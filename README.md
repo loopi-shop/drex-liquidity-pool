@@ -25,15 +25,16 @@ npx hardhat run scripts/exec/poolUserPermissions.ts --network besu
 ```
 
 ## Adicionar liquidez no pool.
-Garanta que a carteira tenha saldo maior ou igual aos valores de desejados do par de moedas (TPFt e DREX).
-Para TPFt este pool utiliza o token representado pelo id 2 (ERC1155).
+Garanta que a carteira tenha saldo maior ou igual aos valores desejados do par de moedas (TPFt e DREX).
+Este pool utiliza o TPFt representado pelo id 2 do padrão ERC1155.
 Antes de executar edite os valores no script.
+Como esse é um pool de produto constante, e foi criado com um valor fixo de TPFt de R$ 16.325,48, novas adições de liquidez precisam ser feitas com a mesma proporção.
 ```shell
 npx hardhat run scripts/exec/addLiquidity.ts --network besu
 ```
 
 ## Compra de TPFT
-Garanta que a carteira tenha saldo maior ou igual ao valor de desejado em DREX para compra de TPFt.
+Garanta que a carteira tenha saldo maior ou igual ao valor desejado em DREX para compra de TPFt.
 Antes de executar edite os valores no script.
 ```shell
 npx hardhat run scripts/exec/swapDrexInTpftOut.ts --network besu
@@ -41,6 +42,7 @@ npx hardhat run scripts/exec/swapDrexInTpftOut.ts --network besu
 
 ## Venda de TPFT
 Garanta que a carteira tenha saldo maior ou igual ao valor de desejado em TPFt para venda.
+Este pool utiliza o TPFt representado pelo id 2 do padrão ERC1155.
 Antes de executar edite os valores no script.
 ```shell
 npx hardhat run scripts/exec/swapTpftInDrexOut.ts --network besu
@@ -86,3 +88,13 @@ Total shares antes: 250n
 Remove Liquidity realizado! Transação 0xa194d63caa3fed5d5481b86c434c852299e577ac673c2cda7581e269914128f4
 Total shares depois: 0n
 ```
+
+
+npx hardhat run scripts/exec/addLiquidity.ts --network besu
+Saldo pool tokens: 0
+Saldo Drex: 816274013.29
+Saldo TPFt: 50008.35
+Liquidez adicionada! Transação 0x84126a063ae77d4ff33ca7f90ec12797082857cc062d5ecad839ef5abfa7f602
+Saldo pool tokens: 638856008
+Saldo Drex: 13.29
+Saldo TPFt: 8.35

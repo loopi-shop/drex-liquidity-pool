@@ -114,6 +114,12 @@ contract SimplePoolProductConstant is ERC1155Holder {
         external
         returns (uint256 shares)
     {
+        (uint256 reserve0, uint256 reserve1) = _reserves();
+
+        if (reserve0 > 0 || reserve1 > 0) {
+            _amount1 = (reserve1 * _amount0) / reserve0;
+        }
+
         token0.transferFrom(msg.sender, address(this), _amount0);
         token1.transferFrom(msg.sender, address(this), _amount1);
 
@@ -132,12 +138,12 @@ contract SimplePoolProductConstant is ERC1155Holder {
         x / y = dx / dy
         dy = y / x * dx
         */
-        (uint256 reserve0, uint256 reserve1) = _reserves();
-        if (reserve0 > 0 || reserve1 > 0) {
-            require(
-                reserve0 * _amount1 == reserve1 * _amount0, "x / y != dx / dy"
-            );
-        }
+        
+        // if (reserve0 > 0 || reserve1 > 0) {
+        //     require(
+        //         reserve0 * _amount1 == reserve1 * _amount0, "x / y != dx / dy"
+        //     );
+        // }
 
         /*
         How much shares to mint?
